@@ -7,7 +7,7 @@ uses
   System.Variants, System.Generics.Defaults, RegularExpressions,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, GBEArray,
   FMX.Layouts, FMX.ListBox, FMX.Controls.Presentation, FMX.StdCtrls,
-  FMX.Memo.Types, uPersonne, FMX.ScrollBox, FMX.Memo, FMX.Objects;
+  FMX.Memo.Types, uPersonne, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.Ani;
 
 type
   TForm2 = class(TForm)
@@ -40,6 +40,7 @@ type
     procedure Button9Click(Sender: TObject);
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
+    procedure Button12Click(Sender: TObject);
   private
     procedure initialiserList2;
     { Déclarations privées }
@@ -72,7 +73,7 @@ begin
   if not(memo1.Lines.Text.IsEmpty) then begin
      var sep := ';';
      var GBEArray := TGBEArray<string>.create(TRegEx.Split(lowercase(memo1.Lines.text),'[\s\n\r\W]'))  // Création du TArray<string>  revoir l'expression régulière pour prendre en compte les caractères accentués qui sont pour l'instant considérés comme séparateur de mot...
-                                      .map(function(value: string): string  // map pour ajouter un séprateur et un flag à 0 ou à 1 à la valeur
+                                      .map<string>(function(value: string): string  // map pour ajouter un séprateur et un flag à 0 ou à 1 à la valeur
                                            begin
                                              if value.isEmpty then Result := value + sep +'0'
                                              else Result := value + sep + '1';
@@ -86,7 +87,7 @@ begin
                                               begin
                                                 result := value;
                                               end, sep)
-                                      .map(function(value: string): string  // map pour faire la somme des valeurs pour chaque clé
+                                      .map<string>(function(value: string): string  // map pour faire la somme des valeurs pour chaque clé
                                            begin
                                              var cle := value.Split(sep)[0];
                                              var laValeur := value.Split(sep)[1];
@@ -102,6 +103,11 @@ begin
   end;
 end;
 
+procedure TForm2.Button12Click(Sender: TObject);
+begin
+  showmessage('Bouton cliqué');
+end;
+
 procedure TForm2.Button1Click(Sender: TObject);     // Initiaisation d'une liste aléatoire de 20 entiers
 begin
   ListBox1.Clear;
@@ -113,7 +119,7 @@ end;
 procedure TForm2.Button2Click(Sender: TObject);    // Exemple de map qui multiplie par 2 toutes les valeurs des éléments du tableau
 begin
   initialiserList2;
-  var GBEArray := TGBEArray<integer>.create(monTableau).Map(
+  var GBEArray := TGBEArray<integer>.create(monTableau).map<integer>(
     function(value: integer): integer
     begin
       result := value * 2;
@@ -139,7 +145,7 @@ end;
 procedure TForm2.Button4Click(Sender: TObject);  // Exemple de reduce qui réduit le tableau à 1 seul élément la somme de toutes les valeurs des éléments du tableau
 begin
   initialiserList2;
-  var GBEArray := TGBEArray<integer>.create(monTableau).reduce(
+  var GBEArray := TGBEArray<integer>.create(monTableau).reduce<integer>(
     function(valeurPrec, valeur: integer): integer
     begin
       result := valeurPrec + valeur;
@@ -161,7 +167,7 @@ procedure TForm2.Button6Click(Sender: TObject);  // exemple enchainant plusieurs
 begin
   initialiserList2;
   var GBEArray := TGBEArray<integer>.create(monTableau)
-    .Map(
+    .map<integer>(
       function(value: integer): integer
       begin
         result := value * 2;
@@ -171,7 +177,7 @@ begin
       begin
         result := value > 100;
       end)
-    .reduce(
+    .reduce<integer>(
       function(valeurPrec, valeur: integer): integer
       begin
         result := valeurPrec + valeur;
@@ -209,13 +215,13 @@ begin
            result := X;
          end)
   .Filter(function(x: TPersonne): boolean begin result := x.genre <> TGenre.nonGenre; end)    // on filtre les personnes qui ont un genre
-  .Map(function(x: TPersonne): TPersonne begin x.points := random(1000); result := x; end)    // on leur affecte un nombre de points aléatoire
+  .map<TPersonne>(function(x: TPersonne): TPersonne begin x.points := random(1000); result := x; end)    // on leur affecte un nombre de points aléatoire
   .sort(TComparer<TPersonne>.Construct(function(const Left: TPersonne; const Right: TPersonne): Integer  // on trie à l'aide d'un TComparer les personnes par ordre décroissant des points obtenus
         begin
           Result := - TComparer<integer>.Default.Compare(Left.points, Right.points);          // on précise donc comment trier sur notre type TPersonne
         end))
   .Print(function(x: TPersonne): TPersonne begin ListBox2.Items.Add(x.nom + ' ' + x.prenom + ' a '+ x.points.ToString+' points'); result := X; end) // Affichage des éléments contenus à cet instant dans listePersonnes
-  .Reduce(    // On réduit listePersonnes à un seul élément en cumulant le nombre de point de chaque élément de listePersonnes
+  .Reduce<TPersonne>(    // On réduit listePersonnes à un seul élément en cumulant le nombre de point de chaque élément de listePersonnes
     function(cumul, value : TPersonne): TPersonne
     begin
       value.points := cumul.points + value.points;
@@ -237,15 +243,15 @@ begin
       result := value mod 15 = 0;
     end);
 
-  var multiple3 := 'Non';
-  if GBEArray then multiple3 := 'Oui';
-  ListBox2.Items.Add('Y a t''il un multiple de 15 ? ' + multiple3);
+  var multiple15 := 'Non';
+  if GBEArray then multiple15 := 'Oui';
+  ListBox2.Items.Add('Y a t''il un multiple de 15 ? ' + multiple15);
 end;
 
 procedure TForm2.Button9Click(Sender: TObject);     // Calcul de la moyenne
 begin
   initialiserList2;
-  var GBEArray := TGBEArray<integer>.create(monTableau).reduce(  // On fait la somme totale via le reduce
+  var GBEArray := TGBEArray<integer>.create(monTableau).reduce<integer>(  // On fait la somme totale via le reduce
     function(valeurPrec, valeur: integer): integer
     begin
       result := valeurPrec + valeur;

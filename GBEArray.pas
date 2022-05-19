@@ -16,8 +16,8 @@ type
      public
        class function Create(const Source: TArray<T>): TGBEArray<T>; static; // to feed the datas
        function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
-       function Map(Lambda: TFunc<T, T>): TGBEArray<T>;                      // map
-       function Reduce(Lambda: TFunc<T, T, T>; const Init: T): T;            // reduce
+       function Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;                   // map
+       function Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;            // reduce
        function Filter(Lambda: TPredicate<T>): TGBEArray<T>;                 // filter
        function Sort(const Comparer: IComparer<T> = nil): TGBEArray<T>;      // sort
        function Print(Lambda: TFunc<T, T>): TGBEArray<T>;                    // print the data
@@ -92,20 +92,19 @@ begin
       inc(iResultArray);
   end;
 
-  SetLength(ResultArray,aDico.count);
   result := TGBEArray<string>.Create(ResultArray);
 end;
 
-function TGBEArray<T>.Map(Lambda: TFunc<T, T>): TGBEArray<T>;
+function TGBEArray<T>.Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;
 begin
-  var ResultArray: TArray<T>;
+  var ResultArray: TArray<S>;
   var iResultArray := 0;
   SetLength(ResultArray,length(self.Data));
   for var it in self.Data do begin
       ResultArray[iResultArray] := Lambda(it);
       inc(iResultArray);
   end;
-  result := TGBEArray<T>.Create(ResultArray);
+  result := TGBEArray<S>.Create(ResultArray);
 end;
 
 function TGBEArray<T>.Print(Lambda: TFunc<T, T>): TGBEArray<T>;
@@ -130,11 +129,12 @@ begin
   Result := TGBEArray<T>.Create(ResultArray);
 end;
 
-function TGBEArray<T>.Reduce(Lambda: TFunc<T, T, T>; const Init: T): T;
+function TGBEArray<T>.Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;
 begin
-  Result := Init;
+  var cumul := Init;
   for var it in Self.Data do
-    Result := Lambda(Result, it);
+    cumul := Lambda(cumul, it);
+  result := cumul;
 end;
 
 function TGBEArray<T>.ToArray: TArray<T>;
