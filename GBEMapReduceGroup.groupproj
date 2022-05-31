@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{5116A8C3-D9D4-4FB7-B71A-A84C6045D7E4}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="GBEMapReduce.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="GBEMapReduceTest.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="GBEMapReduce">
+        <MSBuild Projects="GBEMapReduce.dproj"/>
+    </Target>
+    <Target Name="GBEMapReduce:Clean">
+        <MSBuild Projects="GBEMapReduce.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GBEMapReduce:Make">
+        <MSBuild Projects="GBEMapReduce.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="GBEMapReduceTest">
+        <MSBuild Projects="GBEMapReduceTest.dproj"/>
+    </Target>
+    <Target Name="GBEMapReduceTest:Clean">
+        <MSBuild Projects="GBEMapReduceTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GBEMapReduceTest:Make">
+        <MSBuild Projects="GBEMapReduceTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="GBEMapReduce;GBEMapReduceTest"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="GBEMapReduce:Clean;GBEMapReduceTest:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="GBEMapReduce:Make;GBEMapReduceTest:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

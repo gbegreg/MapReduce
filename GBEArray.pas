@@ -7,7 +7,7 @@ unit GBEArray;
 
 interface
 
-uses System.SysUtils, Generics.Collections, system.Generics.Defaults;
+uses System.SysUtils, Generics.Collections, system.Generics.Defaults, system.Threading;
 
 type
    TGBEArray<T> = record
@@ -17,6 +17,7 @@ type
        class function Create(const Source: TArray<T>): TGBEArray<T>; static; // to feed the datas
        function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
        function Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;                   // map
+       function MapParallel<S>(Lambda: TFunc<T, S>): TGBEArray<S>;
        function Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;            // reduce
        function Filter(Lambda: TPredicate<T>): TGBEArray<T>;                 // filter
        function Sort(const Comparer: IComparer<T> = nil): TGBEArray<T>;      // sort
@@ -101,9 +102,25 @@ begin
   var iResultArray := 0;
   SetLength(ResultArray,length(self.Data));
   for var it in self.Data do begin
-      ResultArray[iResultArray] := Lambda(it);
-      inc(iResultArray);
+    ResultArray[iResultArray] := Lambda(it);
+    inc(iResultArray);
   end;
+  result := TGBEArray<S>.Create(ResultArray);
+end;
+
+function TGBEArray<T>.MapParallel<S>(Lambda: TFunc<T, S>): TGBEArray<S>;
+begin
+  var ResultArray: TArray<S>;
+  var iResultArray := 0;
+  SetLength(ResultArray,length(self.Data));
+  var anArray := self.Data;
+
+  TParallel.For(0, length(anArray)-1,
+    procedure (I:Integer)
+    begin
+      ResultArray[i] := Lambda(anArray[i]);
+    end
+  );
   result := TGBEArray<S>.Create(ResultArray);
 end;
 
@@ -131,10 +148,9 @@ end;
 
 function TGBEArray<T>.Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;
 begin
-  var cumul := Init;
+  result := Init;
   for var it in Self.Data do
-    cumul := Lambda(cumul, it);
-  result := cumul;
+    result := Lambda(result, it);
 end;
 
 function TGBEArray<T>.ToArray: TArray<T>;

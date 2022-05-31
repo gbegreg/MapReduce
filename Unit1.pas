@@ -40,7 +40,6 @@ type
     procedure Button9Click(Sender: TObject);
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
-    procedure Button12Click(Sender: TObject);
   private
     procedure initialiserList2;
     { Déclarations privées }
@@ -61,8 +60,10 @@ begin
   initialiserList2;
   var GBEArray := TGBEArray<integer>.create(monTableau).Concat(TGBEArray<integer>.Create([125, 167, 134, 123, 198]));
 
+  ListBox2.BeginUpdate;
   for var i in GBEArray.ToArray do
     ListBox2.Items.Add(i.toString);
+  ListBox2.EndUpdate;
 end;
 
 procedure TForm2.Button11Click(Sender: TObject);
@@ -103,17 +104,15 @@ begin
   end;
 end;
 
-procedure TForm2.Button12Click(Sender: TObject);
-begin
-  showmessage('Bouton cliqué');
-end;
-
 procedure TForm2.Button1Click(Sender: TObject);     // Initiaisation d'une liste aléatoire de 20 entiers
 begin
   ListBox1.Clear;
   ListBox2.Clear;
-  for var i := 0 to 19 do
+  ListBox1.BeginUpdate;
+  for var i := 0 to 19 do begin
     ListBox1.Items.Add(random(99).toString);
+  end;
+  ListBox1.EndUpdate;
 end;
 
 procedure TForm2.Button2Click(Sender: TObject);    // Exemple de map qui multiplie par 2 toutes les valeurs des éléments du tableau
@@ -125,8 +124,10 @@ begin
       result := value * 2;
     end);
 
+  listBox2.BeginUpdate;
   for var i in GBEArray.ToArray do     // possibilité d'utiliser la méthode print du TGBEArray pour afficher les éléments du tableau de la manière souhaitée
-    ListBox2.Items.Add(i.toString);    // voir l'exemple plus complet avec les TPersonne
+    ListBox2.Items.Add(i.ToString);    // voir l'exemple plus complet avec les TPersonne
+  listBox2.EndUpdate;
 end;
 
 procedure TForm2.Button3Click(Sender: TObject);    // Exemple de filter qui ne sélectionne que les éléments dont la valeur est > 20
@@ -138,8 +139,10 @@ begin
       result := value > 20;
     end);
 
+  listBox2.BeginUpdate;
   for var i in GBEArray.ToArray do     // possibilité d'utiliser la méthode print du TGBEArray pour afficher les éléments du tableau de la manière souhaitée
     ListBox2.Items.Add(i.toString);    // voir l'exemple plus complet avec les TPersonne
+  listBox2.EndUpdate;
 end;
 
 procedure TForm2.Button4Click(Sender: TObject);  // Exemple de reduce qui réduit le tableau à 1 seul élément la somme de toutes les valeurs des éléments du tableau
@@ -159,8 +162,10 @@ begin
   initialiserList2;
   var GBEArray := TGBEArray<integer>.create(monTableau).sort;
 
+  listBox2.BeginUpdate;
   for var i in GBEArray.ToArray do     // possibilité d'utiliser la méthode print du TGBEArray pour afficher les éléments du tableau de la manière souhaitée
     ListBox2.Items.Add(i.toString);    // voir l'exemple plus complet avec les TPersonne
+  listBox2.EndUpdate;
 end;
 
 procedure TForm2.Button6Click(Sender: TObject);  // exemple enchainant plusieurs traitements sur le tableau
