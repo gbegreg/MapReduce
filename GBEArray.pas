@@ -17,14 +17,17 @@ type
        class function Create(const Source: TArray<T>): TGBEArray<T>; static; // to feed the datas
        function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
        function Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;                   // map
-       function MapParallel<S>(Lambda: TFunc<T, S>): TGBEArray<S>;
-       function Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;            // reduce
+       function MapParallel<S>(Lambda: TFunc<T, S>): TGBEArray<S>;           // mapParallel
+       function Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;         // reduce
        function Filter(Lambda: TPredicate<T>): TGBEArray<T>;                 // filter
        function Sort(const Comparer: IComparer<T> = nil): TGBEArray<T>;      // sort
        function Print(Lambda: TFunc<T, T>): TGBEArray<T>;                    // print the data
        function Any(Lambda: TPredicate<T>): boolean;                         // any : is there at least one element that corresponds to the request
        function Concat(anArray: TGBEArray<T>): TGBEArray<T>;                 // Concat : concat this TGBEArray<T> with another TGBEArray<T> into a new one
        function Gather(Lambda: TFunc<T,string, string>; sep : string = ';'): TGBEArray<string>; // group the keys/values and return a TGBEArray<string>
+       procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0);       // execute lambda for all elements don't return object
+       function FirstOrDefault(const Lambda: TPredicate<T> = nil): T;        // Return first element or first element from a predicate (if predicate set) or the default value of T
+       function Every(const Lambda: TPredicate<T>): Boolean;                 // Each element respects the lambda
    end;
 
 implementation
@@ -63,6 +66,12 @@ begin
   end;
   SetLength(ResultArray,ResultArrayFinalLength);
   result := TGBEArray<T>.Create(ResultArray);
+end;
+
+procedure TGBEArray<T>.ForEach(Lambda: TProc<T>; fromElement : integer = 0);
+begin
+  for var it := fromElement to length(self.Data) -1 do
+      Lambda(self.Data[it]);
 end;
 
 function TGBEArray<T>.Gather(Lambda: TFunc<T, string, string>; sep : string = ';'): TGBEArray<string>;
@@ -156,6 +165,26 @@ end;
 function TGBEArray<T>.ToArray: TArray<T>;
 begin
   result := Self.Data;
+end;
+
+function TGBEArray<T>.FirstOrDefault(const Lambda: TPredicate<T> = nil): T;
+begin
+  if assigned(lambda) then begin
+    for var X in Self.Data do
+      if Lambda(X) then Exit(X);
+    Exit(Default(T));
+  end else begin
+    if (Length(Self.Data) > 0) then Exit(Self.Data[0])
+    else Exit(Default(T));
+  end;
+end;
+
+function TGBEArray<T>.Every(const Lambda: TPredicate<T>): Boolean;
+begin
+  for var X in Self.Data do
+    if not Lambda(X) then
+      Exit(False);
+  Exit(True);
 end;
 
 end.
