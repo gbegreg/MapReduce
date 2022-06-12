@@ -28,6 +28,7 @@ type
        procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0);       // execute lambda for all elements don't return object
        function FirstOrDefault(const Lambda: TPredicate<T> = nil): T;        // Return first element or first element from a predicate (if predicate set) or the default value of T
        function Every(const Lambda: TPredicate<T>): Boolean;                 // Each element respects the lambda
+       function FindIndex(Lambda: TPredicate<T>):integer;                    // Return first index of element that match with the predicate
    end;
 
 implementation
@@ -66,6 +67,16 @@ begin
   end;
   SetLength(ResultArray,ResultArrayFinalLength);
   result := TGBEArray<T>.Create(ResultArray);
+end;
+
+function TGBEArray<T>.FindIndex(Lambda: TPredicate<T>): integer;
+begin
+  var indice := -1;
+  for var it in self.Data do begin
+    inc(indice);
+    if Lambda(it) then exit(indice);
+  end;
+  exit(-1);
 end;
 
 procedure TGBEArray<T>.ForEach(Lambda: TProc<T>; fromElement : integer = 0);
