@@ -27,6 +27,9 @@ type
     [TestCase('Test 5 REDUCE OK','5;8;3,16')]
     [TestCase('Test 6 REDUCE OK','1;2;3;53;-2,57')]
     procedure TestReduceInteger(aValue, expectedResult : string);
+    [Test]
+    [TestCase('Test 7 EXTRACT OK','1;2;3;4;5;6;7;8;9;10,4;5;6;7;8;9')]
+    procedure TestExtractInteger(aValue, expectedResult : string);
   end;
 
 implementation
@@ -106,6 +109,23 @@ begin
                                                      end, 0);
 
   var isOK := resultat = expectedResultInt;
+  assert.IsTrue(isOk);
+end;
+
+procedure TestMapReduce.TestExtractInteger(aValue, expectedResult: string);
+begin
+  var tabEntreeInt := convertStringToArrayInt(aValue);
+
+  var resultat := TGBEArray<integer>.Create(tabEntreeInt)
+                                    .Extract(3,8);
+
+  var s := '';
+  for var i := 0 to length(resultat.toArray) -1 do begin
+    if s.IsEmpty then s := resultat.toArray[i].ToString
+    else s := s + ';' + resultat.toArray[i].ToString;
+  end;
+
+  var isOK := s = expectedResult;
   assert.IsTrue(isOk);
 end;
 

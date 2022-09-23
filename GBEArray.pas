@@ -29,6 +29,8 @@ type
        function FirstOrDefault(const Lambda: TPredicate<T> = nil): T;        // Return first element or first element from a predicate (if predicate set) or the default value of T
        function Every(const Lambda: TPredicate<T>): Boolean;                 // Each element respects the lambda
        function FindIndex(Lambda: TPredicate<T>):integer;                    // Return first index of element that match with the predicate
+       function Extract(fromElement : integer = 0; toElement : integer = 0): TGBEArray<T>; // Extract element from an TGBEArray from fromElement indice to toElement indice to a new TGBEArray
+                                                                                           // if fromElement or toElement are negative, it's indicate an offset from the end of the TGBEArray
    end;
 
 implementation
@@ -196,6 +198,28 @@ begin
     if not Lambda(X) then
       Exit(False);
   Exit(True);
+end;
+
+function TGBEArray<T>.Extract(fromElement : integer = 0; toElement : integer = 0): TGBEArray<T>;
+begin
+  var ResultArray: TArray<T>;
+  var ResultArrayFinalLength := 0;
+  SetLength(ResultArray,length(self.Data));
+  var start := fromElement;
+  if start < 0 then start := length(Self.Data) + start;
+
+  var max := toElement;
+  if toElement < 0 then max := length(Self.Data) + max;
+  if max < start then max := length(Self.Data) -1;
+  if toElement = 0 then max := length(Self.Data) -1;
+
+  for var i := start to max do begin
+    ResultArray[ResultArrayFinalLength] := Self.Data[i];
+    inc(ResultArrayFinalLength);
+  end;
+
+  SetLength(ResultArray,ResultArrayFinalLength);
+  result := TGBEArray<T>.Create(ResultArray);
 end;
 
 end.
