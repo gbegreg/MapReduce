@@ -1,4 +1,4 @@
-# MapReduce
+# MapReduce [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
  MapReduce with Delphi
 
 GBEArray is an implementation of MapReduce. It's a generic TArray<T> with some methods : map, reduce, filter, gather, any, print and concat.
