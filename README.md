@@ -21,6 +21,7 @@ GBEArray is an implementation of MapReduce. It's a generic TArray<T> with some m
   Shift<br />
   Sort<br />
   ToArray<br />
+  ToString<br />
   
 
 The project is a sample application to explain how to use it.
