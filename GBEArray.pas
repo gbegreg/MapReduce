@@ -35,6 +35,7 @@ type
        function Pop:T;                                                       // return the last item of the array and remove it from the array
        function Shift: T;                                                    // return the first item of the array and remove it from the array
        function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
+       function toString(Lambda: TFunc<T, String>; sep : string = ','): String;
    end;
 
 implementation
@@ -232,9 +233,14 @@ begin
   result := Self.Data;
 end;
 
-function TGBEArray<T>.toString(Lambda: TFunc<T, String>): String;
+function TGBEArray<T>.toString(Lambda: TFunc<T, String>; sep : string = ','): String;
 begin
-
+  var s := '';
+  for var it: T in self.Data do begin
+    if s.IsEmpty then s := Lambda(it)
+    else s := s + sep + Lambda(it);
+  end;
+  result := s;
 end;
 
 function TGBEArray<T>.FirstOrDefault(const Lambda: TPredicate<T> = nil): T;
