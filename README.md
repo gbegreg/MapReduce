@@ -30,4 +30,6 @@ In the blue rectangle, you need to click on Initialize button to generate a rand
 In the purple rectangle, the click on the button show a sequence of treatments on complex object (TPersonne).<br><br>
 Finally, in the yellow rectangle, there is a TMemo where you can write some text. If you click on the button, the process will extract each word and compute for each word its number of occurrences.
  
-<img src="img/capture.png"> 
+[![MapReduce](http://img.youtube.com/vi/-KurgNbHmvQ/0.jpg)](https://www.youtube.com/watch?v=-KurgNbHmvQ)
+
+(click the image to see the Youtube video)
