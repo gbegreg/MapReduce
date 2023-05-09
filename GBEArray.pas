@@ -35,6 +35,7 @@ type
        function Pop:T;                                                       // return the last item of the array and remove it from the array
        function Shift: T;                                                    // return the first item of the array and remove it from the array
        function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
+       function Fill(aValue : T; number : integer = 10): TGBEArray<T>;       // Fill an TGBEArray<T> with aValue. If the TGBEArray is empty, then the number parameter specify the length of the TGBEArray<T>
        function toString(Lambda: TFunc<T, String>; sep : string = ','): String;
    end;
 
@@ -59,6 +60,17 @@ end;
 class function TGBEArray<T>.Create(const Source: TArray<T>): TGBEArray<T>;
 begin
   Result.Data := Source;
+end;
+
+function TGBEArray<T>.Fill(aValue: T; number: integer = 10): TGBEArray<T>;
+begin
+  if length(self.Data) = 0 then begin
+    if number > -1 then SetLength(self.Data, number);
+  end;
+  for var i := 0 to length(self.Data)-1 do begin
+    self.Data[i] := aValue;
+  end;
+  result := self;
 end;
 
 function TGBEArray<T>.Filter(Lambda: TPredicate<T>): TGBEArray<T>;
