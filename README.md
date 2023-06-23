@@ -6,6 +6,7 @@ GBEArray is an implementation of MapReduce. It's a generic TArray<T> with some m
   Concat<br />
   Every<br />
   Extract<br />
+  Fill<br />
   Filter<br />
   FindIndex<br />
   FirstOrDefault<br />
