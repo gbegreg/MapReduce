@@ -237,6 +237,7 @@ begin
 
   listbox2.Items.Add('');
   listbox2.Items.Add('Nb total de points distribués : ' + listePersonnes.points.ToString);    // On affiche le nb total de points distribués
+
 end;
 
 procedure TForm2.Button8Click(Sender: TObject);
