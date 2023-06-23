@@ -1,5 +1,11 @@
-# MapReduce [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
- MapReduce with Delphi
+# MapReduce
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+![Top language](https://img.shields.io/github/languages/top/gbegreg/MapReduce)
+[![](https://tokei.rs/b1/github/gbegreg/MapReduce?category=code)](https://github.com//gbegreg/MapReduce)
+[![](https://tokei.rs/b1/github/gbegreg/MapReduce?category=files)](https://github.com//gbegreg/MapReduce)
+![GitHub last commit](https://img.shields.io/github/last-commit/gbegreg/MapReduce)
+
+MapReduce with Delphi.
 
 GBEArray is an implementation of MapReduce. It's a generic TArray<T> with some methods :<br /> 
   Any<br />
