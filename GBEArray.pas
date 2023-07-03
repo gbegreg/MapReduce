@@ -12,31 +12,38 @@ uses System.SysUtils, Generics.Collections, system.Generics.Defaults, system.Thr
 type
    TGBEArray<T> = record
      private
-       Data: TArray<T>;        // the datas
+       Data: TArray<T>;  // the datas
      public
        class function Create(const Source: TArray<T>): TGBEArray<T>; static; // to feed the datas
-       function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
-       function Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;                   // map
-       function MapParallel<S>(Lambda: TFunc<T, S>): TGBEArray<S>;           // mapParallel
-       function Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;         // reduce
-       function Filter(Lambda: TPredicate<T>): TGBEArray<T>;                 // filter
-       function Sort(const Comparer: IComparer<T> = nil): TGBEArray<T>;      // sort
-       function Print(Lambda: TFunc<T, T>): TGBEArray<T>;                    // print the data
+       function Add(aValue : T): integer;                                    // Add a value to the end of the array and return the new length
        function Any(Lambda: TPredicate<T>): boolean;                         // any : is there at least one element that corresponds to the request
        function Concat(anArray: TGBEArray<T>): TGBEArray<T>;                 // Concat : concat this TGBEArray<T> with another TGBEArray<T> into a new one
-       function Gather(Lambda: TFunc<T,string, string>; sep : string = ';'): TGBEArray<string>; // group the keys/values and return a TGBEArray<string>
-       procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0);       // execute lambda for all elements don't return object
-       function FirstOrDefault(const Lambda: TPredicate<T> = nil): T;        // Return first element or first element from a predicate (if predicate set) or the default value of T
        function Every(const Lambda: TPredicate<T>): Boolean;                 // Each element respects the lambda
-       function FindIndex(Lambda: TPredicate<T>):integer;                    // Return first index of element that match with the predicate
        function Extract(fromElement : integer = 0; toElement : integer = 0): TGBEArray<T>; // Extract element from an TGBEArray from fromElement indice to toElement indice to a new TGBEArray
                                                                                            // if fromElement or toElement are negative, it's indicate an offset from the end of the TGBEArray
-       function Reverse:TGBEArray<T>;                                        // Reverse the array
-       function Pop:T;                                                       // return the last item of the array and remove it from the array
-       function Shift: T;                                                    // return the first item of the array and remove it from the array
-       function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
        function Fill(aValue : T; iStart : integer = 0; iEnd : integer = -1): TGBEArray<T>;       // Fill an TGBEArray<T> with aValue. If the TGBEArray is empty and the iStart at 0, then iEnd parameter specify also the length of the TGBEArray<T>
-       function toString(Lambda: TFunc<T, String>; sep : string = ','): String;
+       function Filter(Lambda: TPredicate<T>): TGBEArray<T>;                 // filter
+       function FilterEvenItems(Lambda: TPredicate<T>): TGBEArray<T>;        // filter on even items only
+       function FilterOddItems(Lambda: TPredicate<T>): TGBEArray<T>;         // filter on odd items only
+       function FindIndex(Lambda: TPredicate<T>):integer;                    // Return first index of element that match with the predicate
+       function FirstOrDefault(const Lambda: TPredicate<T> = nil): T;        // Return first element or first element from a predicate (if predicate set) or the default value of T
+       procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0);       // execute lambda for all elements don't return object
+       function Gather(Lambda: TFunc<T,string, string>; sep : string = ';'): TGBEArray<string>; // group the keys/values and return a TGBEArray<string>
+       function Insert(aValue : T; index : integer = 0): TGBEArray<T>;       // Insert aValue at index position and return a new TGBEArray
+       function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
+       function Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;                   // map
+       function MapParallel<S>(Lambda: TFunc<T, S>): TGBEArray<S>;           // mapParallel
+       function Pop:T;                                                       // return the last item of the array and remove it from the array
+       function Print(Lambda: TFunc<T, T>): TGBEArray<T>;                    // print the data
+       function Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;         // reduce
+       function ReduceRight<S>(Lambda: TFunc<S, T, S>; const Init: S): S;
+       function Reverse:TGBEArray<T>;                                        // Reverse the array
+       function Shift: T;                                                    // return the first item of the array and remove it from the array
+       function Sort(const Comparer: IComparer<T> = nil): TGBEArray<T>;      // sort
+       function SuchAs(index : integer; aValue : T): TGBEArray<T>;           // Generate a new Array with the same datas but with aValue at index position
+       function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
+       function ToDictionary(iStartKey : integer = 0): TDictionary<integer, T>;  // convert to TDictionary with an optional paramter to specify the start index of key
+       function ToString(Lambda: TFunc<T, String>; sep : string = ','): String; // convert to string
    end;
 
 implementation
@@ -60,6 +67,14 @@ end;
 class function TGBEArray<T>.Create(const Source: TArray<T>): TGBEArray<T>;
 begin
   Result.Data := Source;
+end;
+
+function TGBEArray<T>.Add(aValue: T): integer;
+begin
+  var lg := length(self.Data) +1;
+  SetLength(self.Data, lg);
+  self.Data[lg-1] := aValue;
+  result := lg;
 end;
 
 function TGBEArray<T>.Fill(aValue: T; iStart : integer = 0; iEnd : integer = -1): TGBEArray<T>;
@@ -91,6 +106,38 @@ begin
   end;
   SetLength(ResultArray,ResultArrayFinalLength);
   result := TGBEArray<T>.Create(ResultArray);
+end;
+
+function TGBEArray<T>.FilterOddItems(Lambda: TPredicate<T>): TGBEArray<T>;
+begin
+  var ResultArray : TArray<T>;
+  var ResultArrayFinalLength := 0;
+  SetLength(ResultArray,length(self.Data));
+
+  for var i := 1 to length(Self.Data) do begin
+    if odd(i) then begin
+      ResultArray[ResultArrayFinalLength] := Self.Data[i-1];
+      inc(ResultArrayFinalLength);
+    end;
+  end;
+  SetLength(ResultArray,ResultArrayFinalLength);
+  result := TGBEArray<T>.Create(ResultArray).Filter(lambda);
+end;
+
+function TGBEArray<T>.FilterEvenItems(Lambda: TPredicate<T>): TGBEArray<T>;
+begin
+  var ResultArray : TArray<T>;
+  var ResultArrayFinalLength := 0;
+  SetLength(ResultArray,length(self.Data));
+
+  for var i := 1 to length(Self.Data) do begin
+    if not(odd(i)) then begin
+      ResultArray[ResultArrayFinalLength] := Self.Data[i-1];
+      inc(ResultArrayFinalLength);
+    end;
+  end;
+  SetLength(ResultArray,ResultArrayFinalLength);
+  result := TGBEArray<T>.Create(ResultArray).Filter(lambda);
 end;
 
 function TGBEArray<T>.FindIndex(Lambda: TPredicate<T>): integer;
@@ -138,6 +185,27 @@ begin
   end;
 
   result := TGBEArray<string>.Create(ResultArray);
+end;
+
+function TGBEArray<T>.Insert(aValue: T; index: integer): TGBEArray<T>;
+begin
+  if index <= length(self.Data) then begin
+    var ResultArray: TArray<T>;
+    var iResultArray := 0;
+    SetLength(ResultArray,length(self.Data)+1);
+    var insere := false;
+    for var i := 0 to length(self.Data) do begin
+      if i = index then begin
+        ResultArray[iResultArray] := aValue;
+        insere := true;
+      end else begin
+        if insere then ResultArray[iResultArray] := self.Data[i-1]
+        else ResultArray[iResultArray] := self.Data[i];
+      end;
+      inc(iResultArray);
+    end;
+    result := TGBEArray<T>.Create(ResultArray);
+  end else result := TGBEArray<T>.Create(self.data);
 end;
 
 function TGBEArray<T>.LastOrDefault(const Lambda: TPredicate<T>): T;
@@ -226,10 +294,32 @@ begin
   Result := TGBEArray<T>.Create(ResultArray);
 end;
 
+function TGBEArray<T>.SuchAs(index: integer; aValue: T): TGBEArray<T>;
+begin
+  var ResultArray: TArray<T>;
+  var iResultArray := 0;
+  SetLength(ResultArray,length(self.Data));
+  for var it in self.Data do begin
+    if iResultArray = index then ResultArray[iResultArray] := aValue
+    else ResultArray[iResultArray] := it;
+    inc(iResultArray);
+  end;
+  result := TGBEArray<T>.Create(ResultArray);
+end;
+
 function TGBEArray<T>.Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;
 begin
   result := Init;
   for var it in Self.Data do
+    result := Lambda(result, it);
+end;
+
+function TGBEArray<T>.ReduceRight<S>(Lambda: TFunc<S, T, S>; const Init: S): S;
+begin
+  var ResultArray : TGBEArray<T> := TGBEArray<T>.Create(Copy(Self.Data)).Reverse;
+
+  result := Init;
+  for var it in ResultArray.Data do
     result := Lambda(result, it);
 end;
 
@@ -248,6 +338,17 @@ end;
 function TGBEArray<T>.ToArray: TArray<T>;
 begin
   result := Self.Data;
+end;
+
+function TGBEArray<T>.ToDictionary(iStartKey : integer = 0): TDictionary<integer, T>;
+begin
+  var resultat := TDictionary<integer, T>.create;
+  var i :=  iStartKey;
+  for var it: T in self.Data do begin
+    resultat.add(i, it);
+    inc(i);
+  end;
+  result := resultat;
 end;
 
 function TGBEArray<T>.toString(Lambda: TFunc<T, String>; sep : string = ','): String;
