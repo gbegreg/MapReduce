@@ -8,26 +8,33 @@
 MapReduce with Delphi.
 
 GBEArray is an implementation of MapReduce. It's a generic TArray<T> with some methods :<br /> 
+  Add<br />
   Any<br />
   Concat<br />
   Every<br />
   Extract<br />
   Fill<br />
   Filter<br />
+  FilterEvenItems<br />
+  FilterOddItems<br />
   FindIndex<br />
   FirstOrDefault<br />
   ForEach<br />
   Gather<br />
+  Insert<br />
   LastOrDefault<br />
   Map<br />
   MapParallel<br />
   Pop<br />
   Print<br />
   Reduce<br />
+  ReduceRight<br />
   Reverse<br />
   Shift<br />
   Sort<br />
+  SuchAs<br />
   ToArray<br />
+  ToDictionary<br />
   ToString<br />
   
 
