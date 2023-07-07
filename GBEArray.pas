@@ -39,11 +39,13 @@ type
        function ReduceRight<S>(Lambda: TFunc<S, T, S>; const Init: S): S;
        function Reverse:TGBEArray<T>;                                        // Reverse the array
        function Shift: T;                                                    // return the first item of the array and remove it from the array
+       function Swap(index1, index2 : integer): TGBEArray<T>;                // Return new TGBEArra<T> with swap item1 and item2
        function Sort(const Comparer: IComparer<T> = nil): TGBEArray<T>;      // sort
        function SuchAs(index : integer; aValue : T): TGBEArray<T>;           // Generate a new Array with the same datas but with aValue at index position
        function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
        function ToDictionary(iStartKey : integer = 0): TDictionary<integer, T>;  // convert to TDictionary with an optional paramter to specify the start index of key
        function ToString(Lambda: TFunc<T, String>; sep : string = ','): String; // convert to string
+       function Unique: TGBEArray<T>;                                        // Retunr a new TGBEArray<T> without duplicates
    end;
 
 implementation
@@ -307,6 +309,20 @@ begin
   result := TGBEArray<T>.Create(ResultArray);
 end;
 
+function TGBEArray<T>.Swap(index1, index2: integer): TGBEArray<T>;
+begin
+  var ResultArray : TArray<T> := Copy(Self.Data);
+  SetLength(ResultArray,length(self.Data));
+
+  if (index1 < length(self.Data)) and (index2 < length(self.Data)) then begin
+     var temp := resultArray[index1];
+     ResultArray[index1] := ResultArray[index2];
+     ResultArray[index2] := temp;
+  end;
+
+  result := TGBEArray<T>.Create(ResultArray);
+end;
+
 function TGBEArray<T>.Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;
 begin
   result := Init;
@@ -359,6 +375,22 @@ begin
     else s := s + sep + Lambda(it);
   end;
   result := s;
+end;
+
+function TGBEArray<T>.Unique: TGBEArray<T>;
+begin
+  var hash := TDictionary<T, integer>.create(length(self.Data));
+  try
+    for var it in self.Data do
+      hash.AddOrSetValue(it, 0);
+
+    var ResultArray: TArray<T>;
+    SetLength(ResultArray, hash.Count);
+    resultArray := hash.Keys.ToArray;
+    result := TGBEArray<T>.Create(ResultArray);
+  finally
+    hash.Free;
+  end;
 end;
 
 function TGBEArray<T>.FirstOrDefault(const Lambda: TPredicate<T> = nil): T;
