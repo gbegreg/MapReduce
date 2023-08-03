@@ -39,7 +39,7 @@ function SuchAs(index : integer; aValue : T): TGBEArray<T>;           // Generat
 function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
 function ToDictionary(iStartKey : integer = 0): TDictionary<integer, T>;  // convert to TDictionary with an optional paramter to specify the start index of key
 function ToString(Lambda: TFunc<T, String>; sep : string = ','): String; // convert to string
-function Unique: TGBEArray<T>;                                        // Retunr a new TGBEArray<T> without duplicates
+function Unique: TGBEArray<T>;                                        // Return a new TGBEArray<T> without duplicates
 ```
   
 
