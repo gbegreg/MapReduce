@@ -115,7 +115,7 @@ begin
   initialiserList2;
 
   var listePersonnes := TGBEArray<TValue>.Create(     // Création d'un tableau de TValue
-    ['Convert only float value °C to °F', 'London', 16.0, 'Paris', 24.2, 'Sydney', 29.5, 'Madrid', 34.0, 'Tokyo', 31.4])
+    ['Convert only float value °C to °F', 'Seattle', 16.0, 'Berlin', 15.2, 'Tokyo', 24.2, 'Sydney', 29.5, 'Rio', 34.0, 'Alexandria', 31.4])
   .Print(function(x: TValue): TValue
          begin
            if x.Kind = TTypeKind.tkFloat then listbox1.Items.Add(x.AsExtended.ToString)
