@@ -36,7 +36,7 @@ object Form2: TForm2
       Position.X = 5.000000000000000000
       Position.Y = 10.000000000000000000
       Size.Width = 191.000000000000000000
-      Size.Height = 343.000000000000000000
+      Size.Height = 374.000000000000000000
       Size.PlatformDefault = False
       XRadius = 7.000000000000000000
       YRadius = 7.000000000000000000
@@ -50,7 +50,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 10
+        TabOrder = 11
         Text = 'Initialize'
         OnClick = Button1Click
       end
@@ -64,7 +64,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 9
+        TabOrder = 10
         Text = 'Map  (x2)'
         OnClick = Button2Click
       end
@@ -78,7 +78,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 8
+        TabOrder = 9
         Text = 'Filter  (>20)'
         OnClick = Button3Click
       end
@@ -92,7 +92,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 7
+        TabOrder = 8
         Text = 'Reduce (init value 0)'
         OnClick = Button4Click
       end
@@ -106,7 +106,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 6
+        TabOrder = 7
         Text = 'Sort'
         OnClick = Button5Click
       end
@@ -120,7 +120,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 5
+        TabOrder = 6
         Text = 'Map x2, Filter >100, Reduce'
         OnClick = Button6Click
       end
@@ -134,7 +134,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 4
+        TabOrder = 5
         Text = 'Any ( Is there a multiple of 15)'
         OnClick = Button8Click
       end
@@ -148,7 +148,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 3
+        TabOrder = 4
         Text = 'Average'
         OnClick = Button9Click
       end
@@ -162,9 +162,23 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 2
+        TabOrder = 3
         Text = 'Concat'
         OnClick = Button10Click
+      end
+      object Button13: TButton
+        Align = Top
+        Margins.Left = 10.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 10.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 334.000000000000000000
+        Size.Width = 171.000000000000000000
+        Size.Height = 31.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'Unique (remove duplicates)'
+        OnClick = Button13Click
       end
     end
     object Rectangle2: TRectangle
@@ -188,7 +202,7 @@ object Form2: TForm2
       Margins.Right = 5.000000000000000000
       Margins.Bottom = 10.000000000000000000
       Size.Width = 191.000000000000000000
-      Size.Height = 297.000000000000000000
+      Size.Height = 210.000000000000000000
       Size.PlatformDefault = False
       XRadius = 7.000000000000000000
       YRadius = 7.000000000000000000
@@ -206,11 +220,11 @@ object Form2: TForm2
         Margins.Top = 10.000000000000000000
         Margins.Right = 10.000000000000000000
         Size.Width = 171.000000000000000000
-        Size.Height = 241.000000000000000000
+        Size.Height = 154.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
         Viewport.Width = 167.000000000000000000
-        Viewport.Height = 237.000000000000000000
+        Viewport.Height = 150.000000000000000000
       end
       object Button11: TButton
         Align = Bottom
@@ -219,7 +233,7 @@ object Form2: TForm2
         Margins.Right = 10.000000000000000000
         Margins.Bottom = 10.000000000000000000
         Position.X = 10.000000000000000000
-        Position.Y = 256.000000000000000000
+        Position.Y = 169.000000000000000000
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
@@ -248,7 +262,7 @@ object Form2: TForm2
       Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 358.000000000000000000
+      Position.Y = 389.000000000000000000
       Size.Width = 191.000000000000000000
       Size.Height = 51.000000000000000000
       Size.PlatformDefault = False
@@ -268,6 +282,48 @@ object Form2: TForm2
         TabOrder = 0
         Text = 'Sample with TPersonne object'
         OnClick = Button7Click
+      end
+    end
+    object Rectangle4: TRectangle
+      Align = Top
+      Fill.Kind = Gradient
+      Fill.Gradient.Points = <
+        item
+          Color = xFF0DA03B
+          Offset = 0.000000000000000000
+        end
+        item
+          Color = xFF6BF575
+          Offset = 1.000000000000000000
+        end>
+      Fill.Gradient.StartPosition.X = 0.500000000000000000
+      Fill.Gradient.StartPosition.Y = 1.000000000000000000
+      Fill.Gradient.StopPosition.X = 0.499999970197677600
+      Fill.Gradient.StopPosition.Y = 0.000000000000000000
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 445.000000000000000000
+      Size.Width = 191.000000000000000000
+      Size.Height = 51.000000000000000000
+      Size.PlatformDefault = False
+      XRadius = 7.000000000000000000
+      YRadius = 7.000000000000000000
+      object Button12: TButton
+        Align = Top
+        Margins.Left = 10.000000000000000000
+        Margins.Top = 10.000000000000000000
+        Margins.Right = 10.000000000000000000
+        Margins.Bottom = 10.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 10.000000000000000000
+        Size.Width = 171.000000000000000000
+        Size.Height = 31.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'Sample with array of TValue'
+        OnClick = Button12Click
       end
     end
   end

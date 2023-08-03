@@ -7,7 +7,7 @@ uses
   System.Variants, System.Generics.Defaults, RegularExpressions,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, GBEArray,
   FMX.Layouts, FMX.ListBox, FMX.Controls.Presentation, FMX.StdCtrls,
-  FMX.Memo.Types, uPersonne, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.Ani;
+  FMX.Memo.Types, uPersonne, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.Ani, system.Rtti;
 
 type
   TForm2 = class(TForm)
@@ -29,6 +29,9 @@ type
     Button11: TButton;
     Rectangle3: TRectangle;
     Button7: TButton;
+    Rectangle4: TRectangle;
+    Button12: TButton;
+    Button13: TButton;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -40,6 +43,8 @@ type
     procedure Button9Click(Sender: TObject);
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
+    procedure Button12Click(Sender: TObject);
+    procedure Button13Click(Sender: TObject);
   private
     procedure initialiserList2;
     { Déclarations privées }
@@ -102,6 +107,43 @@ begin
      for var i in GBEArray.ToArray do
        ListBox2.Items.Add(i);
   end;
+end;
+
+procedure TForm2.Button12Click(Sender: TObject);
+begin
+  listBox1.Clear;
+  initialiserList2;
+
+  var listePersonnes := TGBEArray<TValue>.Create(     // Création d'un tableau de TValue
+    ['Convert only float value °C to °F', 'London', 16.0, 'Paris', 24.2, 'Sydney', 29.5, 'Madrid', 34.0, 'Tokyo', 31.4])
+  .Print(function(x: TValue): TValue
+         begin
+           if x.Kind = TTypeKind.tkFloat then listbox1.Items.Add(x.AsExtended.ToString)
+           else listBox1.Items.Add(x.AsString);
+           result := X;
+         end)
+  .map<TValue>(function(x: TValue): TValue begin
+    if x.Kind = TTypeKind.tkFloat then begin
+      x := x.AsExtended * 1.8 + 32; // convert °C to °F
+    end;
+    result := x;
+  end)
+  .Print(function(x: TValue): TValue begin
+    if x.Kind = TTypeKind.tkFloat then listbox2.Items.Add(x.AsExtended.ToString)
+    else ListBox2.Items.Add(x.AsString);
+    result := X;
+  end)
+end;
+
+procedure TForm2.Button13Click(Sender: TObject);
+begin
+  initialiserList2;
+  var GBEArray := TGBEArray<integer>.create(monTableau).Unique;
+
+  ListBox2.BeginUpdate;
+  for var i in GBEArray.ToArray do
+    ListBox2.Items.Add(i.toString);
+  ListBox2.EndUpdate;
 end;
 
 procedure TForm2.Button1Click(Sender: TObject);     // Initiaisation d'une liste aléatoire de 20 entiers
