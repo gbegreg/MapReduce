@@ -27,7 +27,7 @@ type
        function FilterOddItems(Lambda: TPredicate<T>): TGBEArray<T>;         // filter on odd items only
        function FindIndex(Lambda: TPredicate<T>):integer;                    // Return first index of element that match with the predicate
        function FirstOrDefault(const Lambda: TPredicate<T> = nil): T;        // Return first element or first element from a predicate (if predicate set) or the default value of T
-       procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0);       // execute lambda for all elements don't return object
+       procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0; toElement : integer = -1); // execute lambda for all elements don't return object
        function Gather(Lambda: TFunc<T,string, string>; sep : string = ';'): TGBEArray<string>; // group the keys/values and return a TGBEArray<string>
        function Insert(aValue : T; index : integer = 0): TGBEArray<T>;       // Insert aValue at index position and return a new TGBEArray
        function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
@@ -152,9 +152,12 @@ begin
   exit(-1);
 end;
 
-procedure TGBEArray<T>.ForEach(Lambda: TProc<T>; fromElement : integer = 0);
+procedure TGBEArray<T>.ForEach(Lambda: TProc<T>; fromElement : integer = 0; toElement : integer = -1);
 begin
-  for var it := fromElement to length(self.Data) -1 do
+  var max := length(self.Data) -1;
+  if (toElement > fromElement) and (toElement <= max) then max := toElement;
+
+  for var it := fromElement to max do
       Lambda(self.Data[it]);
 end;
 
