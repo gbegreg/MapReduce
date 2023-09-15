@@ -45,7 +45,7 @@ type
        function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
        function ToDictionary(iStartKey : integer = 0): TDictionary<integer, T>;  // convert to TDictionary with an optional paramter to specify the start index of key
        function ToString(Lambda: TFunc<T, String>; sep : string = ','): String; // convert to string
-       function Unique: TGBEArray<T>;                                        // Return a new TGBEArray<T> without duplicates
+       function Unique(const Comparer: IComparer<T> = nil): TGBEArray<T>;    // Return a new TGBEArray<T> without duplicates. You can specify a comparer to sort result array as you want
    end;
 
 implementation
@@ -380,7 +380,7 @@ begin
   result := s;
 end;
 
-function TGBEArray<T>.Unique: TGBEArray<T>;
+function TGBEArray<T>.Unique(const Comparer: IComparer<T> = nil): TGBEArray<T>;
 begin
   var hash := TDictionary<T, integer>.create(length(self.Data));
   try
@@ -390,6 +390,7 @@ begin
     var ResultArray: TArray<T>;
     SetLength(ResultArray, hash.Count);
     resultArray := hash.Keys.ToArray;
+    if assigned(Comparer) then TArray.Sort<T>(resultArray, Comparer);
     result := TGBEArray<T>.Create(ResultArray);
   finally
     hash.Free;

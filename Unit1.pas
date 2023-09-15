@@ -138,7 +138,11 @@ end;
 procedure TForm2.Button13Click(Sender: TObject);
 begin
   initialiserList2;
-  var GBEArray := TGBEArray<integer>.create(monTableau).Unique;
+
+  var GBEArray := TGBEArray<integer>.create(monTableau).Unique(TComparer<integer>.Construct(function(const Left: integer; const Right: integer): Integer
+        begin
+          Result := TComparer<integer>.Default.Compare(Left, Right);
+        end));
 
   ListBox2.BeginUpdate;
   for var i in GBEArray.ToArray do
