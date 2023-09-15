@@ -21,7 +21,7 @@ function FilterEvenItems(Lambda: TPredicate<T>): TGBEArray<T>;        // filter 
 function FilterOddItems(Lambda: TPredicate<T>): TGBEArray<T>;         // filter on odd items only
 function FindIndex(Lambda: TPredicate<T>):integer;                    // Return first index of element that match with the predicate
 function FirstOrDefault(const Lambda: TPredicate<T> = nil): T;        // Return first element or first element from a predicate (if predicate set) or the default value of T
-procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0);       // execute lambda for all elements don't return object
+procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0; toElement : integer = -1);  // execute lambda for all elements don't return object
 function Gather(Lambda: TFunc<T,string, string>; sep : string = ';'): TGBEArray<string>; // group the keys/values and return a TGBEArray<string>
 function Insert(aValue : T; index : integer = 0): TGBEArray<T>;       // Insert aValue at index position and return a new TGBEArray
 function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
@@ -39,7 +39,7 @@ function SuchAs(index : integer; aValue : T): TGBEArray<T>;           // Generat
 function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
 function ToDictionary(iStartKey : integer = 0): TDictionary<integer, T>;  // convert to TDictionary with an optional paramter to specify the start index of key
 function ToString(Lambda: TFunc<T, String>; sep : string = ','): String; // convert to string
-function Unique: TGBEArray<T>;                                        // Return a new TGBEArray<T> without duplicates
+function Unique(const Comparer: IComparer<T> = nil): TGBEArray<T>;    // Return a new TGBEArray<T> without duplicates
 ```
   
 
