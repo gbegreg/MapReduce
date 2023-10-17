@@ -30,6 +30,7 @@ type
        procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0; toElement : integer = -1); // execute lambda for all elements don't return object
        function Gather(Lambda: TFunc<T,string, string>; sep : string = ';'): TGBEArray<string>; // group the keys/values and return a TGBEArray<string>
        function Insert(aValue : T; index : integer = 0): TGBEArray<T>;       // Insert aValue at index position and return a new TGBEArray
+       function KeepDuplicates: TGBEArray<T>;                                // Return a new TGBEArray with only duplicates elements
        function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
        function Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;                   // map
        function MapParallel<S>(Lambda: TFunc<T, S>): TGBEArray<S>;           // mapParallel
@@ -211,6 +212,32 @@ begin
     end;
     result := TGBEArray<T>.Create(ResultArray);
   end else result := TGBEArray<T>.Create(self.data);
+end;
+
+function TGBEArray<T>.KeepDuplicates: TGBEArray<T>;
+begin
+  var hash1 := TDictionary<T, integer>.create(length(self.Data));
+  var hash2 := TDictionary<T, integer>.create(length(self.Data));
+  var lgHash1 := hash1.Count;
+  var lgHash2 := hash2.Count;
+  try
+    for var it in self.Data do begin
+      lgHash1 := hash1.Count;
+      hash1.AddOrSetValue(it, 0);
+      if lgHash1 = hash1.count then begin
+        lgHash2 := hash2.Count;
+        hash2.AddOrSetValue(it, 0);
+      end;
+    end;
+
+    var ResultArray: TArray<T>;
+    SetLength(ResultArray, hash2.Count);
+    resultArray := hash2.Keys.ToArray;
+    result := TGBEArray<T>.Create(ResultArray);
+  finally
+    hash1.Free;
+    hash2.Free;
+  end;
 end;
 
 function TGBEArray<T>.LastOrDefault(const Lambda: TPredicate<T>): T;
