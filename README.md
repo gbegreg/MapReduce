@@ -24,6 +24,7 @@ function FirstOrDefault(const Lambda: TPredicate<T> = nil): T;        // Return 
 procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0; toElement : integer = -1);  // execute lambda for all elements don't return object
 function Gather(Lambda: TFunc<T,string, string>; sep : string = ';'): TGBEArray<string>; // group the keys/values and return a TGBEArray<string>
 function Insert(aValue : T; index : integer = 0): TGBEArray<T>;       // Insert aValue at index position and return a new TGBEArray
+ function Join(sep: string = ','; lambda: TFunc<T, string> = nil): String;  // Join elements of array in a string with sep as separator
 function KeepDuplicates: TGBEArray<T>;                                // Return a new TGBEArray with only duplicates elements
 function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
 function Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;                   // map
