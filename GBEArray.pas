@@ -7,7 +7,7 @@ unit GBEArray;
 
 interface
 
-uses System.SysUtils, Generics.Collections, system.Generics.Defaults, system.Threading;
+uses System.SysUtils, Generics.Collections, system.Generics.Defaults, system.Threading, System.Rtti;
 
 type
    TGBEArray<T> = record
@@ -30,6 +30,7 @@ type
        procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0; toElement : integer = -1); // execute lambda for all elements don't return object
        function Gather(Lambda: TFunc<T,string, string>; sep : string = ';'): TGBEArray<string>; // group the keys/values and return a TGBEArray<string>
        function Insert(aValue : T; index : integer = 0): TGBEArray<T>;       // Insert aValue at index position and return a new TGBEArray
+       function Join(sep: string = ','; lambda: TFunc<T, string> = nil): String;  // Join elements of array in a string with sep as separator
        function KeepDuplicates: TGBEArray<T>;                                // Return a new TGBEArray with only duplicates elements
        function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
        function Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;                   // map
@@ -464,6 +465,24 @@ begin
 
   SetLength(ResultArray,ResultArrayFinalLength);
   result := TGBEArray<T>.Create(ResultArray);
+end;
+
+function TGBEArray<T>.Join(sep: string = ','; lambda: TFunc<T, string> = nil): String;
+begin
+  var resultat := '';
+  if assigned(lambda) then begin
+    for var it in self.Data do
+        resultat := resultat + sep + lambda(it);
+  end else begin
+    for var i := 0 to length(self.Data) -1 do begin
+      resultat := resultat + TValue.From<T>(self.Data[i]).ToString() + sep;
+    end;
+  end;
+  if resultat.EndsWith(sep, true) then begin
+    resultat := copy(resultat, 1, length(resultat) - length(sep));
+  end;
+
+  result := resultat;
 end;
 
 end.

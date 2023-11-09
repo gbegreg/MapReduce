@@ -32,6 +32,7 @@ type
     Rectangle4: TRectangle;
     Button12: TButton;
     Button13: TButton;
+    Button14: TButton;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -45,6 +46,7 @@ type
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
     procedure Button13Click(Sender: TObject);
+    procedure Button14Click(Sender: TObject);
   private
     procedure initialiserList2;
     { Déclarations privées }
@@ -147,6 +149,15 @@ begin
   ListBox2.BeginUpdate;
   for var i in GBEArray.ToArray do
     ListBox2.Items.Add(i.toString);
+  ListBox2.EndUpdate;
+end;
+
+procedure TForm2.Button14Click(Sender: TObject);
+begin
+  initialiserList2;
+  var GBEArrayjoin := TGBEArray<integer>.create(monTableau).Join;
+  ListBox2.BeginUpdate;
+  ListBox2.Items.Add(GBEArrayjoin);
   ListBox2.EndUpdate;
 end;
 

@@ -2,7 +2,7 @@ object Form2: TForm2
   Left = 0
   Top = 0
   Caption = 'Delphi : MapReduce'
-  ClientHeight = 721
+  ClientHeight = 720
   ClientWidth = 644
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -11,7 +11,7 @@ object Form2: TForm2
   object Layout1: TLayout
     Align = Left
     Size.Width = 201.000000000000000000
-    Size.Height = 721.000000000000000000
+    Size.Height = 720.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Rectangle1: TRectangle
@@ -36,7 +36,7 @@ object Form2: TForm2
       Position.X = 5.000000000000000000
       Position.Y = 10.000000000000000000
       Size.Width = 191.000000000000000000
-      Size.Height = 374.000000000000000000
+      Size.Height = 407.000000000000000000
       Size.PlatformDefault = False
       XRadius = 7.000000000000000000
       YRadius = 7.000000000000000000
@@ -50,7 +50,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 11
+        TabOrder = 12
         Text = 'Initialize'
         OnClick = Button1Click
       end
@@ -64,7 +64,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 10
+        TabOrder = 11
         Text = 'Map  (x2)'
         OnClick = Button2Click
       end
@@ -78,7 +78,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 9
+        TabOrder = 10
         Text = 'Filter  (>20)'
         OnClick = Button3Click
       end
@@ -92,7 +92,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 8
+        TabOrder = 9
         Text = 'Reduce (init value 0)'
         OnClick = Button4Click
       end
@@ -106,7 +106,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 7
+        TabOrder = 8
         Text = 'Sort'
         OnClick = Button5Click
       end
@@ -120,7 +120,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 6
+        TabOrder = 7
         Text = 'Map x2, Filter >100, Reduce'
         OnClick = Button6Click
       end
@@ -134,7 +134,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 5
+        TabOrder = 6
         Text = 'Any ( Is there a multiple of 15)'
         OnClick = Button8Click
       end
@@ -148,7 +148,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 4
+        TabOrder = 5
         Text = 'Average'
         OnClick = Button9Click
       end
@@ -162,7 +162,7 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 3
+        TabOrder = 4
         Text = 'Concat'
         OnClick = Button10Click
       end
@@ -176,9 +176,23 @@ object Form2: TForm2
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 2
+        TabOrder = 3
         Text = 'Unique (remove duplicates)'
         OnClick = Button13Click
+      end
+      object Button14: TButton
+        Align = Top
+        Margins.Left = 10.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 10.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 370.000000000000000000
+        Size.Width = 171.000000000000000000
+        Size.Height = 31.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'Join'
+        OnClick = Button14Click
       end
     end
     object Rectangle2: TRectangle
@@ -202,7 +216,7 @@ object Form2: TForm2
       Margins.Right = 5.000000000000000000
       Margins.Bottom = 10.000000000000000000
       Size.Width = 191.000000000000000000
-      Size.Height = 210.000000000000000000
+      Size.Height = 176.000000000000000000
       Size.PlatformDefault = False
       XRadius = 7.000000000000000000
       YRadius = 7.000000000000000000
@@ -220,11 +234,11 @@ object Form2: TForm2
         Margins.Top = 10.000000000000000000
         Margins.Right = 10.000000000000000000
         Size.Width = 171.000000000000000000
-        Size.Height = 154.000000000000000000
+        Size.Height = 120.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
         Viewport.Width = 167.000000000000000000
-        Viewport.Height = 150.000000000000000000
+        Viewport.Height = 116.000000000000000000
       end
       object Button11: TButton
         Align = Bottom
@@ -233,7 +247,7 @@ object Form2: TForm2
         Margins.Right = 10.000000000000000000
         Margins.Bottom = 10.000000000000000000
         Position.X = 10.000000000000000000
-        Position.Y = 169.000000000000000000
+        Position.Y = 135.000000000000000000
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
@@ -262,7 +276,7 @@ object Form2: TForm2
       Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 389.000000000000000000
+      Position.Y = 422.000000000000000000
       Size.Width = 191.000000000000000000
       Size.Height = 51.000000000000000000
       Size.PlatformDefault = False
@@ -304,7 +318,7 @@ object Form2: TForm2
       Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Position.Y = 445.000000000000000000
+      Position.Y = 478.000000000000000000
       Size.Width = 191.000000000000000000
       Size.Height = 51.000000000000000000
       Size.PlatformDefault = False
@@ -334,7 +348,7 @@ object Form2: TForm2
     Position.X = 201.000000000000000000
     Position.Y = 10.000000000000000000
     Size.Width = 205.000000000000000000
-    Size.Height = 701.000000000000000000
+    Size.Height = 700.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     DisableFocusEffect = True
@@ -342,7 +356,7 @@ object Form2: TForm2
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     Viewport.Width = 201.000000000000000000
-    Viewport.Height = 697.000000000000000000
+    Viewport.Height = 696.000000000000000000
   end
   object ListBox2: TListBox
     Align = Client
@@ -351,7 +365,7 @@ object Form2: TForm2
     Margins.Right = 10.000000000000000000
     Margins.Bottom = 10.000000000000000000
     Size.Width = 218.000000000000000000
-    Size.Height = 701.000000000000000000
+    Size.Height = 700.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
     DisableFocusEffect = True
@@ -359,6 +373,6 @@ object Form2: TForm2
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     Viewport.Width = 214.000000000000000000
-    Viewport.Height = 697.000000000000000000
+    Viewport.Height = 696.000000000000000000
   end
 end
