@@ -10,6 +10,12 @@ uses
   FMX.Memo.Types, uPersonne, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.Ani, system.Rtti;
 
 type
+  TClient = record
+    firstname :string;
+    lastname: string;
+    constructor Create(unNom, unPrenom: string);
+  end;
+
   TForm2 = class(TForm)
     Layout1: TLayout;
     ListBox1: TListBox;
@@ -33,6 +39,20 @@ type
     Button12: TButton;
     Button13: TButton;
     Button14: TButton;
+    Rectangle5: TRectangle;
+    Layout2: TLayout;
+    Button15: TButton;
+    Layout3: TLayout;
+    Label1: TLabel;
+    Button16: TButton;
+    Button17: TButton;
+    Button18: TButton;
+    Layout4: TLayout;
+    Button19: TButton;
+    Button20: TButton;
+    Button21: TButton;
+    Button22: TButton;
+    Splitter1: TSplitter;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -47,8 +67,18 @@ type
     procedure Button12Click(Sender: TObject);
     procedure Button13Click(Sender: TObject);
     procedure Button14Click(Sender: TObject);
+    procedure Layout1Click(Sender: TObject);
+    procedure Button15Click(Sender: TObject);
+    procedure Button16Click(Sender: TObject);
+    procedure Button17Click(Sender: TObject);
+    procedure Button18Click(Sender: TObject);
+    procedure Button19Click(Sender: TObject);
+    procedure Button20Click(Sender: TObject);
+    procedure Button21Click(Sender: TObject);
+    procedure Button22Click(Sender: TObject);
   private
     procedure initialiserList2;
+    procedure afficherCasTest;
     { Déclarations privées }
   public
     { Déclarations publiques }
@@ -161,6 +191,131 @@ begin
   ListBox2.EndUpdate;
 end;
 
+procedure TForm2.Button15Click(Sender: TObject);
+begin
+  ListBox1.Clear;
+  ListBox2.Clear;
+  listBox1.Items.Add('Array1 = [1,3,4,5]');
+  listBox1.Items.Add('Array2 = [1,2,5,6,7]');
+  var tab1 := TGBEArray<Integer>.Create([1,3,4,5]);
+  var tab2 := TGBEArray<Integer>.Create([1,2,5,6,7]);
+
+  var resultat := '';
+  tab1.Remove(tab2).Print(function(x: integer): integer
+         begin
+           resultat := resultat + x.ToString + ',';
+         end);
+  if resultat.EndsWith(',', true) then resultat := copy(resultat, 1, length(resultat) - length(','));
+  resultat := 'Array1.remove(Array2) = ['+resultat+']';
+  listBox2.Items.Add(resultat);
+end;
+
+procedure TForm2.Button16Click(Sender: TObject);
+begin
+  ListBox1.Clear;
+  ListBox2.Clear;
+  listBox1.Items.Add('Array1 = [1,3,4,5]');
+  listBox1.Items.Add('Array2 = [1,2,5,6,7]');
+  var tab1 := TGBEArray<Integer>.Create([1,3,4,5]);
+  var tab2 := TGBEArray<Integer>.Create([1,2,5,6,7]);
+
+  var resultat := '';
+  tab1.IntersectionWith(tab2).Print(function(x: integer): integer
+         begin
+           resultat := resultat + x.ToString + ',';
+         end);
+  if resultat.EndsWith(',', true) then resultat := copy(resultat, 1, length(resultat) - length(','));
+  resultat := 'Array1.IntersectionWith(Array2) = ['+resultat+']';
+  listBox2.Items.Add(resultat);
+end;
+
+procedure TForm2.Button17Click(Sender: TObject);
+begin
+  ListBox1.Clear;
+  ListBox2.Clear;
+  listBox1.Items.Add('Array1 = [1,3,4,5]');
+  listBox1.Items.Add('Array2 = [1,2,5,6,7]');
+  var tab1 := TGBEArray<Integer>.Create([1,3,4,5]);
+  var tab2 := TGBEArray<Integer>.Create([1,2,5,6,7]);
+
+  var resultat := '';
+  tab1.SymmetricalDifferenceWith(tab2).Print(function(x: integer): integer
+         begin
+           resultat := resultat + x.ToString + ',';
+         end);
+  if resultat.EndsWith(',', true) then resultat := copy(resultat, 1, length(resultat) - length(','));
+  resultat := 'Array1.SymmetricalDifferenceWith(Array2) = ['+resultat+']';
+  listBox2.Items.Add(resultat);
+end;
+
+procedure TForm2.Button18Click(Sender: TObject);
+begin
+  ListBox1.Clear;
+  ListBox2.Clear;
+  listBox1.Items.Add('Array1 = [1,3,4,5]');
+  listBox1.Items.Add('Array2 = [1,2,5,6,7]');
+  var tab1 := TGBEArray<Integer>.Create([1,3,4,5]);
+  var tab2 := TGBEArray<Integer>.Create([1,2,5,6,7]);
+
+  var resultat := '';
+  tab1.UnionWith(tab2).Print(function(x: integer): integer
+         begin
+           resultat := resultat + x.ToString + ',';
+         end);
+  if resultat.EndsWith(',', true) then resultat := copy(resultat, 1, length(resultat) - length(','));
+  resultat := 'Array1.UnionWith(Array2) = ['+resultat+']';
+  listBox2.Items.Add(resultat);
+end;
+
+procedure TForm2.Button19Click(Sender: TObject);
+begin
+  var clients_magasin1 := TGBEArray<TClient>.create(
+      [TClient.create('dupond', 'charles'),
+      TClient.create('durand', 'marie'),
+      TClient.create('bidochon', 'robert')
+      ]);
+
+  var clients_magasin2 := TGBEArray<TClient>.create(
+      [TClient.create('bertrand', 'marcel'),
+      TClient.create('durand', 'marie'),
+      TClient.create('bidochon', 'robert'),
+      TClient.create('pagnol', 'claire')
+      ]);
+
+  afficherCasTest;
+
+  listBox2.Items.Add('clients_store1.remove(clients_store2) = ');
+  listBox2.Items.Add('[');
+
+  clients_magasin1.remove(clients_magasin2, function(aValue: TClient): string
+                                                     begin
+                                                       result := aValue.firstname+','+aValue.lastname;
+                                                     end)
+                  .Print(function(x: TClient): TClient
+                         begin
+                           listBox2.Items.Add('   {'+x.firstname + ',' + x.lastname+'}');
+                         end);
+  listBox2.Items.Add(']');
+end;
+
+procedure TForm2.afficherCasTest;
+begin
+  ListBox1.Clear;
+  ListBox2.Clear;
+  listBox1.Items.Add('clients_store1 = [');
+  listBox1.Items.Add('   {firstname=charles,lastname=dupond},');
+  listBox1.Items.Add('   {firstname=marie,lastname=durand},');
+  listBox1.Items.Add('   {firstname=robert,lastname=bidochon}');
+  listBox1.Items.Add(']');
+
+  listBox1.Items.Add('clients_store2 = [');
+  listBox1.Items.Add('   {firstname=marcel,lastname=bertrand},');
+  listBox1.Items.Add('   {firstname=marie,lastname=durand},');
+  listBox1.Items.Add('   {firstname=robert,lastname=bidochon}');
+  listBox1.Items.Add('   {firstname=claire,lastname=pagnol}');
+  listBox1.Items.Add(']');
+end;
+
 procedure TForm2.Button1Click(Sender: TObject);     // Initiaisation d'une liste aléatoire de 20 entiers
 begin
   ListBox1.Clear;
@@ -170,6 +325,99 @@ begin
     ListBox1.Items.Add(random(99).toString);
   end;
   ListBox1.EndUpdate;
+end;
+
+procedure TForm2.Button20Click(Sender: TObject);
+begin
+  var clients_magasin1 := TGBEArray<TClient>.create(
+      [TClient.create('dupond', 'charles'),
+      TClient.create('durand', 'marie'),
+      TClient.create('bidochon', 'robert')
+      ]);
+
+  var clients_magasin2 := TGBEArray<TClient>.create(
+      [TClient.create('bertrand', 'marcel'),
+      TClient.create('durand', 'marie'),
+      TClient.create('bidochon', 'robert'),
+      TClient.create('pagnol', 'claire')
+      ]);
+
+  afficherCasTest;
+
+  listBox2.Items.Add('clients_store1.IntersectionWith(clients_store2) = ');
+  listBox2.Items.Add('[');
+
+  clients_magasin1.IntersectionWith(clients_magasin2, function(aValue: TClient): string
+                                                     begin
+                                                       result := aValue.firstname+','+aValue.lastname;
+                                                     end)
+                  .Print(function(x: TClient): TClient
+                         begin
+                           listBox2.Items.Add('   {'+x.firstname + ',' + x.lastname+'}');
+                         end);
+  listBox2.Items.Add(']');
+end;
+
+procedure TForm2.Button21Click(Sender: TObject);
+begin
+  var clients_magasin1 := TGBEArray<TClient>.create(
+      [TClient.create('dupond', 'charles'),
+      TClient.create('durand', 'marie'),
+      TClient.create('bidochon', 'robert')
+      ]);
+
+  var clients_magasin2 := TGBEArray<TClient>.create(
+      [TClient.create('bertrand', 'marcel'),
+      TClient.create('durand', 'marie'),
+      TClient.create('bidochon', 'robert'),
+      TClient.create('pagnol', 'claire')
+      ]);
+
+  afficherCasTest;
+
+  listBox2.Items.Add('clients_store1.SymmetricalDifferenceWith(clients_store2) = ');
+  listBox2.Items.Add('[');
+
+  clients_magasin1.SymmetricalDifferenceWith(clients_magasin2, function(aValue: TClient): string
+                                                     begin
+                                                       result := aValue.firstname+','+aValue.lastname;
+                                                     end)
+                  .Print(function(x: TClient): TClient
+                         begin
+                           listBox2.Items.Add('   {'+x.firstname + ',' + x.lastname+'}');
+                         end);
+  listBox2.Items.Add(']');
+end;
+
+procedure TForm2.Button22Click(Sender: TObject);
+begin
+  var clients_magasin1 := TGBEArray<TClient>.create(
+      [TClient.create('dupond', 'charles'),
+      TClient.create('durand', 'marie'),
+      TClient.create('bidochon', 'robert')
+      ]);
+
+  var clients_magasin2 := TGBEArray<TClient>.create(
+      [TClient.create('bertrand', 'marcel'),
+      TClient.create('durand', 'marie'),
+      TClient.create('bidochon', 'robert'),
+      TClient.create('pagnol', 'claire')
+      ]);
+
+  afficherCasTest;
+
+  listBox2.Items.Add('clients_store1.UnionWith(clients_store2) = ');
+  listBox2.Items.Add('[');
+
+  clients_magasin1.UnionWith(clients_magasin2, function(aValue: TClient): string
+                                                     begin
+                                                       result := aValue.firstname+','+aValue.lastname;
+                                                     end)
+                  .Print(function(x: TClient): TClient
+                         begin
+                           listBox2.Items.Add('   {'+x.firstname + ',' + x.lastname+'}');
+                         end);
+  listBox2.Items.Add(']');
 end;
 
 procedure TForm2.Button2Click(Sender: TObject);    // Exemple de map qui multiplie par 2 toutes les valeurs des éléments du tableau
@@ -331,6 +579,19 @@ begin
   setLength(monTableau, ListBox1.Items.Count);
   for var i := 0 to ListBox1.Items.Count-1 do
     monTableau[i] := StrToInt(ListBox1.Items[i]);
+end;
+
+procedure TForm2.Layout1Click(Sender: TObject);
+begin
+
+end;
+
+{ TClient }
+
+constructor TClient.Create(unNom, unPrenom: string);
+begin
+  lastname := unNom;
+  firstname := unPrenom;
 end;
 
 end.

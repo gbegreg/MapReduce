@@ -1,9 +1,9 @@
 object Form2: TForm2
   Left = 0
   Top = 0
-  Caption = 'Delphi : MapReduce'
-  ClientHeight = 720
-  ClientWidth = 644
+  Caption = 'Delphi : TGBEArray demo (map, filter, reduce and more...)'
+  ClientHeight = 861
+  ClientWidth = 877
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -11,9 +11,10 @@ object Form2: TForm2
   object Layout1: TLayout
     Align = Left
     Size.Width = 201.000000000000000000
-    Size.Height = 720.000000000000000000
+    Size.Height = 861.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
+    OnClick = Layout1Click
     object Rectangle1: TRectangle
       Align = Top
       Fill.Kind = Gradient
@@ -52,6 +53,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 12
         Text = 'Initialize'
+        TextSettings.Trimming = None
         OnClick = Button1Click
       end
       object Button2: TButton
@@ -66,6 +68,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 11
         Text = 'Map  (x2)'
+        TextSettings.Trimming = None
         OnClick = Button2Click
       end
       object Button3: TButton
@@ -80,6 +83,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 10
         Text = 'Filter  (>20)'
+        TextSettings.Trimming = None
         OnClick = Button3Click
       end
       object Button4: TButton
@@ -94,6 +98,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 9
         Text = 'Reduce (init value 0)'
+        TextSettings.Trimming = None
         OnClick = Button4Click
       end
       object Button5: TButton
@@ -108,6 +113,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 8
         Text = 'Sort'
+        TextSettings.Trimming = None
         OnClick = Button5Click
       end
       object Button6: TButton
@@ -122,6 +128,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 7
         Text = 'Map x2, Filter >100, Reduce'
+        TextSettings.Trimming = None
         OnClick = Button6Click
       end
       object Button8: TButton
@@ -136,6 +143,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 6
         Text = 'Any ( Is there a multiple of 15)'
+        TextSettings.Trimming = None
         OnClick = Button8Click
       end
       object Button9: TButton
@@ -150,6 +158,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 5
         Text = 'Average'
+        TextSettings.Trimming = None
         OnClick = Button9Click
       end
       object Button10: TButton
@@ -164,6 +173,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 4
         Text = 'Concat'
+        TextSettings.Trimming = None
         OnClick = Button10Click
       end
       object Button13: TButton
@@ -178,6 +188,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 3
         Text = 'Unique (remove duplicates)'
+        TextSettings.Trimming = None
         OnClick = Button13Click
       end
       object Button14: TButton
@@ -192,11 +203,12 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 2
         Text = 'Join'
+        TextSettings.Trimming = None
         OnClick = Button14Click
       end
     end
     object Rectangle2: TRectangle
-      Align = Client
+      Align = Top
       Fill.Kind = Gradient
       Fill.Gradient.Points = <
         item
@@ -214,9 +226,10 @@ object Form2: TForm2
       Margins.Left = 5.000000000000000000
       Margins.Top = 5.000000000000000000
       Margins.Right = 5.000000000000000000
-      Margins.Bottom = 10.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 534.000000000000000000
       Size.Width = 191.000000000000000000
-      Size.Height = 176.000000000000000000
+      Size.Height = 128.000000000000000000
       Size.PlatformDefault = False
       XRadius = 7.000000000000000000
       YRadius = 7.000000000000000000
@@ -234,11 +247,11 @@ object Form2: TForm2
         Margins.Top = 10.000000000000000000
         Margins.Right = 10.000000000000000000
         Size.Width = 171.000000000000000000
-        Size.Height = 120.000000000000000000
+        Size.Height = 72.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
         Viewport.Width = 167.000000000000000000
-        Viewport.Height = 116.000000000000000000
+        Viewport.Height = 68.000000000000000000
       end
       object Button11: TButton
         Align = Bottom
@@ -247,12 +260,13 @@ object Form2: TForm2
         Margins.Right = 10.000000000000000000
         Margins.Bottom = 10.000000000000000000
         Position.X = 10.000000000000000000
-        Position.Y = 135.000000000000000000
+        Position.Y = 87.000000000000000000
         Size.Width = 171.000000000000000000
         Size.Height = 31.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
         Text = 'Compute each word occurrence'
+        TextSettings.Trimming = None
         OnClick = Button11Click
       end
     end
@@ -295,6 +309,7 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 0
         Text = 'Sample with TPersonne object'
+        TextSettings.Trimming = None
         OnClick = Button7Click
       end
     end
@@ -337,7 +352,197 @@ object Form2: TForm2
         Size.PlatformDefault = False
         TabOrder = 0
         Text = 'Sample with array of TValue'
+        TextSettings.Trimming = None
         OnClick = Button12Click
+      end
+    end
+    object Rectangle5: TRectangle
+      Align = Client
+      Fill.Kind = Gradient
+      Fill.Gradient.Points = <
+        item
+          Color = xFFA00D0D
+          Offset = 0.000000000000000000
+        end
+        item
+          Color = xFFF5A46B
+          Offset = 1.000000000000000000
+        end>
+      Fill.Gradient.StartPosition.X = 0.500000000000000000
+      Fill.Gradient.StartPosition.Y = 1.000000000000000000
+      Fill.Gradient.StopPosition.X = 0.499999970197677600
+      Fill.Gradient.StopPosition.Y = 0.000000000000000000
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Size.Width = 191.000000000000000000
+      Size.Height = 189.000000000000000000
+      Size.PlatformDefault = False
+      XRadius = 7.000000000000000000
+      YRadius = 7.000000000000000000
+      object Layout2: TLayout
+        Align = Left
+        Position.Y = 25.000000000000000000
+        Size.Width = 105.000000000000000000
+        Size.Height = 164.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object Button15: TButton
+          Align = Top
+          Margins.Left = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Size.Width = 95.000000000000000000
+          Size.Height = 31.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 3
+          Text = 'Remove (int)'
+          TextSettings.WordWrap = True
+          TextSettings.Trimming = None
+          OnClick = Button15Click
+        end
+        object Button16: TButton
+          Align = Top
+          Margins.Left = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Position.Y = 36.000000000000000000
+          Size.Width = 95.000000000000000000
+          Size.Height = 31.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 2
+          Text = 'Intersection (int)'
+          TextSettings.WordWrap = True
+          TextSettings.Trimming = None
+          OnClick = Button16Click
+        end
+        object Button17: TButton
+          Align = Top
+          Margins.Left = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Position.Y = 72.000000000000000000
+          Size.Width = 95.000000000000000000
+          Size.Height = 49.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Symmetrical difference (int)'
+          TextSettings.WordWrap = True
+          TextSettings.Trimming = None
+          OnClick = Button17Click
+        end
+        object Button18: TButton
+          Align = Top
+          Margins.Left = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Position.Y = 126.000000000000000000
+          Size.Width = 95.000000000000000000
+          Size.Height = 31.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          Text = 'Union (int)'
+          TextSettings.WordWrap = True
+          TextSettings.Trimming = None
+          OnClick = Button18Click
+        end
+      end
+      object Layout3: TLayout
+        Align = Top
+        Size.Width = 191.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        object Label1: TLabel
+          Align = Client
+          StyledSettings = [Family, Size]
+          Margins.Left = 10.000000000000000000
+          Margins.Right = 10.000000000000000000
+          Size.Width = 171.000000000000000000
+          Size.Height = 25.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.FontColor = claWhite
+          TextSettings.HorzAlign = Center
+          TextSettings.Trimming = None
+          Text = 'Operations between 2 arrays'
+          TabOrder = 0
+        end
+      end
+      object Layout4: TLayout
+        Align = Client
+        Size.Width = 86.000000000000000000
+        Size.Height = 164.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object Button19: TButton
+          Align = Top
+          Margins.Left = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Size.Width = 76.000000000000000000
+          Size.Height = 31.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 3
+          Text = 'Remove (TClient)'
+          TextSettings.WordWrap = True
+          TextSettings.Trimming = None
+          OnClick = Button19Click
+        end
+        object Button20: TButton
+          Align = Top
+          Margins.Left = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Position.Y = 36.000000000000000000
+          Size.Width = 76.000000000000000000
+          Size.Height = 31.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 2
+          Text = 'Intersection (TClient)'
+          TextSettings.WordWrap = True
+          TextSettings.Trimming = None
+          OnClick = Button20Click
+        end
+        object Button21: TButton
+          Align = Top
+          Margins.Left = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Position.Y = 72.000000000000000000
+          Size.Width = 76.000000000000000000
+          Size.Height = 49.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Symmetrical difference (TClient)'
+          TextSettings.WordWrap = True
+          TextSettings.Trimming = None
+          OnClick = Button21Click
+        end
+        object Button22: TButton
+          Align = Top
+          Margins.Left = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Position.Y = 126.000000000000000000
+          Size.Width = 76.000000000000000000
+          Size.Height = 31.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          Text = 'Union (TClient)'
+          TextSettings.WordWrap = True
+          TextSettings.Trimming = None
+          OnClick = Button22Click
+        end
       end
     end
   end
@@ -347,32 +552,40 @@ object Form2: TForm2
     Margins.Bottom = 10.000000000000000000
     Position.X = 201.000000000000000000
     Position.Y = 10.000000000000000000
-    Size.Width = 205.000000000000000000
-    Size.Height = 700.000000000000000000
+    Size.Width = 296.000000000000000000
+    Size.Height = 841.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 201.000000000000000000
-    Viewport.Height = 696.000000000000000000
+    Viewport.Width = 292.000000000000000000
+    Viewport.Height = 837.000000000000000000
   end
   object ListBox2: TListBox
     Align = Client
-    Margins.Left = 10.000000000000000000
     Margins.Top = 10.000000000000000000
     Margins.Right = 10.000000000000000000
     Margins.Bottom = 10.000000000000000000
-    Size.Width = 218.000000000000000000
-    Size.Height = 700.000000000000000000
+    Size.Width = 359.000000000000000000
+    Size.Height = 841.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 214.000000000000000000
-    Viewport.Height = 696.000000000000000000
+    Viewport.Width = 355.000000000000000000
+    Viewport.Height = 837.000000000000000000
+  end
+  object Splitter1: TSplitter
+    Align = Left
+    Cursor = crHSplit
+    MinSize = 20.000000000000000000
+    Position.X = 497.000000000000000000
+    Size.Width = 11.000000000000000000
+    Size.Height = 861.000000000000000000
+    Size.PlatformDefault = False
   end
 end

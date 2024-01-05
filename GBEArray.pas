@@ -1,4 +1,4 @@
-{ Developed by Grégory Bersegeay 2022
+{ Developed by Grégory Bersegeay 2022-2024
   https://github.com/gbegreg/MapReduce
   https://www.gbesoft.fr
   https://www.youtube.com/channel/UCmmgsWSi92t51LbWaiyBRkQ
@@ -10,6 +10,7 @@ interface
 uses System.SysUtils, Generics.Collections, system.Generics.Defaults, system.Threading, System.Rtti;
 
 type
+   TGBEMerge = (subtract, inBoth);
    TGBEArray<T> = record
      private
        Data: TArray<T>;  // the datas
@@ -29,7 +30,9 @@ type
        function FirstOrDefault(const Lambda: TPredicate<T> = nil): T;        // Return first element or first element from a predicate (if predicate set) or the default value of T
        procedure ForEach(Lambda: TProc<T>; fromElement : integer = 0; toElement : integer = -1); // execute lambda for all elements don't return object
        function Gather(Lambda: TFunc<T,string, string>; sep : string = ';'): TGBEArray<string>; // group the keys/values and return a TGBEArray<string>
+       function Includes(aValue: T; lambda: TFunc<T, string> = nil): boolean;                                // aValue is included in the array ?
        function Insert(aValue : T; index : integer = 0): TGBEArray<T>;       // Insert aValue at index position and return a new TGBEArray
+       function IntersectionWith(anotherArray: TGBEArray<T>; lambda: TFunc<T, string> = nil): TGBEArray<T>;  // Return a new TGBEArray which is intersection of original arrya and anotherArray
        function Join(sep: string = ','; lambda: TFunc<T, string> = nil): String;  // Join elements of array in a string with sep as separator
        function KeepDuplicates: TGBEArray<T>;                                // Return a new TGBEArray with only duplicates elements
        function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
@@ -39,14 +42,17 @@ type
        function Print(Lambda: TFunc<T, T>): TGBEArray<T>;                    // print the data
        function Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;         // reduce
        function ReduceRight<S>(Lambda: TFunc<S, T, S>; const Init: S): S;
+       function Remove(anotherArray: TGBEArray<T>; lambda: TFunc<T, string> = nil): TGBEArray<T>;            // return a new TGBEArray<T> without element of anotherArray
        function Reverse:TGBEArray<T>;                                        // Reverse the array
        function Shift: T;                                                    // return the first item of the array and remove it from the array
        function Swap(index1, index2 : integer): TGBEArray<T>;                // Return new TGBEArra<T> with swap item1 and item2
        function Sort(const Comparer: IComparer<T> = nil): TGBEArray<T>;      // sort
        function SuchAs(index : integer; aValue : T): TGBEArray<T>;           // Generate a new Array with the same datas but with aValue at index position
+       function SymmetricalDifferenceWith(anotherArray: TGBEArray<T>; lambda: TFunc<T, string> = nil): TGBEArray<T>;  // Return a new TGBEArray<T> symetrical difference of original array and anotherArray
        function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
        function ToDictionary(iStartKey : integer = 0): TDictionary<integer, T>;  // convert to TDictionary with an optional paramter to specify the start index of key
        function ToString(Lambda: TFunc<T, String>; sep : string = ','): String; // convert to string
+       function UnionWith(anotherArray: TGBEArray<T>; lambda: TFunc<T, string> = nil): TGBEArray<T>;         // Return a new TGBEArray<T> which is union between original array and anotherArray
        function Unique(const Comparer: IComparer<T> = nil): TGBEArray<T>;    // Return a new TGBEArray<T> without duplicates. You can specify a comparer to sort result array as you want
    end;
 
@@ -483,6 +489,55 @@ begin
   end;
 
   result := resultat;
+end;
+
+function TGBEArray<T>.Remove(anotherArray: TGBEArray<T>; lambda: TFunc<T, string> = nil): TGBEArray<T>;
+begin
+  result := self.filter(function(value: T): Boolean
+                        begin
+                           result := not(anotherArray.includes(value, lambda));
+                        end);
+end;
+
+function TGBEArray<T>.IntersectionWith(anotherArray: TGBEArray<T>; lambda: TFunc<T, string> = nil): TGBEArray<T>;
+begin
+  result := self.filter(function(value: T): Boolean
+                        begin
+                            result := anotherArray.includes(value, lambda);
+                        end);
+end;
+
+function TGBEArray<T>.SymmetricalDifferenceWith(anotherArray: TGBEArray<T>; lambda: TFunc<T, string> = nil): TGBEArray<T>;
+begin
+  var courant := TGBEArray<T>.Create(Self.Data);
+  result := self.filter(function(value: T): Boolean
+                        begin
+                          result := not(anotherArray.includes(value, lambda));
+                        end)
+                .concat(anotherArray.filter(function(value: T): Boolean
+                                            begin
+                                               result := not(courant.includes(value, lambda));
+                                            end)
+                        );
+end;
+
+function TGBEArray<T>.UnionWith(anotherArray: TGBEArray<T>; lambda: TFunc<T, string> = nil): TGBEArray<T>;
+begin
+  var inter := self.intersectionWith(anotherArray, lambda);
+  result := self.SymmetricalDifferenceWith(anotherArray, lambda).concat(inter);
+end;
+
+function TGBEArray<T>.includes(aValue: T; lambda: TFunc<T, string> = nil): boolean;
+begin
+  if assigned(lambda) then begin
+    for var it in Self.Data do
+      if lambda(it) = lambda(aValue) then Exit(True);
+    Exit(False);
+  end else begin
+    for var it in Self.Data do
+      if TValue.From<T>(it).toString = TValue.From<T>(aValue).toString then Exit(True);
+    Exit(False);
+  end;
 end;
 
 end.
