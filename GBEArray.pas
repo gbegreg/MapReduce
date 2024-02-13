@@ -7,7 +7,7 @@ unit GBEArray;
 
 interface
 
-uses System.SysUtils, Generics.Collections, system.Generics.Defaults, system.Threading, System.Rtti;
+uses System.SysUtils, Generics.Collections, system.Generics.Defaults, system.Threading, System.Rtti, system.Math, StrUtils;
 
 type
    TGBEMerge = (subtract, inBoth);
@@ -38,6 +38,8 @@ type
        function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
        function Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;                   // map
        function MapParallel<S>(Lambda: TFunc<T, S>): TGBEArray<S>;           // mapParallel
+       function AbsoluteMajorityElement(Lambda: TFunc<T, String> = nil;
+                noAbsoluteMajority : string = 'No absolute majority'): String; // returns a string which indicates the element of the array which is present in an absolute majority, returns noAbsoluteMajority if no element has an absolute majority
        function Pop:T;                                                       // return the last item of the array and remove it from the array
        function Print(Lambda: TFunc<T, T>): TGBEArray<T>;                    // print the data
        function Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;         // reduce
@@ -538,6 +540,48 @@ begin
       if TValue.From<T>(it).toString = TValue.From<T>(aValue).toString then Exit(True);
     Exit(False);
   end;
+end;
+
+function TGBEArray<T>.AbsoluteMajorityElement(Lambda: TFunc<T, String> = nil; noAbsoluteMajority : string = 'No absolute majority'): String;
+begin
+  var anArray : TArray<String>;
+  setLength(anArray, length(self.data));
+  var lambdaAssigned := assigned(lambda);
+
+  if lambdaAssigned then begin
+    for var i := 0 to length(self.Data) -1 do
+        anArray[i] := lambda(self.Data[i]);
+  end else begin
+    for var i := 0 to length(self.Data) -1 do begin
+      anArray[i] := TValue.From<T>(self.Data[i]).ToString;
+    end;
+  end;
+
+  // Boyer-Moore majority vote algo
+  var element : T;
+  var counter := 0;
+
+  for var i := 0 to length(anArray) -1 do begin
+    if counter = 0 then begin
+       element := self.Data[i];
+       counter := 1;
+    end else begin
+      if lambdaAssigned then counter := counter + system.Math.ifthen(lambda(element) = anArray[i], 1, -1)
+      else counter := counter + system.Math.ifthen(TValue.From<T>(element).toString = anArray[i] , 1, -1);
+    end;
+  end;
+
+  var foundElement :='';
+  if lambdaAssigned then foundElement := lambda(element)
+  else foundElement := TValue.From<T>(element).toString;
+
+  // foundElement is it really majority ?
+  var nbFoundElement := 0;
+  for var I in anArray do begin
+    if i = foundElement then inc(nbFoundElement);
+  end;
+
+  result := strutils.IfThen(nbFoundElement > length(anArray) / 2, foundElement, noAbsoluteMajority);
 end;
 
 end.
