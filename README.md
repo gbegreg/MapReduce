@@ -31,6 +31,8 @@ function KeepDuplicates: TGBEArray<T>;                                // Return 
 function LastOrDefault(const Lambda: TPredicate<T> = nil): T;         // Return first element or first element from a predicate (if predicate set) or the default value of T
 function Map<S>(Lambda: TFunc<T, S>): TGBEArray<S>;                   // map
 function MapParallel<S>(Lambda: TFunc<T, S>): TGBEArray<S>;           // mapParallel
+function AbsoluteMajorityElement(Lambda: TFunc<T, String> = nil;
+                noAbsoluteMajority : string = 'No absolute majority'): String; // returns a string which indicates the element of the array which is present in an absolute majority, returns noAbsoluteMajority if no element has an absolute majority
 function Pop:T;                                                       // return the last item of the array and remove it from the array
 function Print(Lambda: TFunc<T, T>): TGBEArray<T>;                    // print the data
 function Reduce<S>(Lambda: TFunc<S, T, S>; const Init: S): S;         // reduce
