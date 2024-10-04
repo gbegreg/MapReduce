@@ -49,6 +49,7 @@ type
        function Shift: T;                                                    // return the first item of the array and remove it from the array
        function Swap(index1, index2 : integer): TGBEArray<T>;                // Return new TGBEArra<T> with swap item1 and item2
        function Sort(const Comparer: IComparer<T> = nil): TGBEArray<T>;      // sort
+       function ParallelSort(const Comparer: IComparer<T> = nil): TGBEArray<T>;  // sort with TParallelArray
        function SuchAs(index : integer; aValue : T): TGBEArray<T>;           // Generate a new Array with the same datas but with aValue at index position
        function SymmetricalDifferenceWith(anotherArray: TGBEArray<T>; lambda: TFunc<T, string> = nil): TGBEArray<T>;  // Return a new TGBEArray<T> symetrical difference of original array and anotherArray
        function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
@@ -335,6 +336,14 @@ begin
   Result := TGBEArray<T>.Create(ResultArray);
 end;
 
+function TGBEArray<T>.ParallelSort(const Comparer: IComparer<T> = nil): TGBEArray<T>;
+begin
+  var ResultArray : TArray<T> := Copy(Self.Data);
+  if assigned(Comparer) then TParallelArray.Sort<T>(ResultArray, Comparer)
+  else TParallelArray.Sort<T>(ResultArray);
+  Result := TGBEArray<T>.Create(ResultArray);
+end;
+
 function TGBEArray<T>.SuchAs(index: integer; aValue: T): TGBEArray<T>;
 begin
   var ResultArray: TArray<T>;
@@ -426,7 +435,7 @@ begin
     var ResultArray: TArray<T>;
     SetLength(ResultArray, hash.Count);
     resultArray := hash.Keys.ToArray;
-    if assigned(Comparer) then TArray.Sort<T>(resultArray, Comparer);
+    if assigned(Comparer) then TParallelArray.Sort<T>(resultArray, Comparer);
     result := TGBEArray<T>.Create(ResultArray);
   finally
     hash.Free;

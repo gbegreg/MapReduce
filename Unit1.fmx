@@ -2,8 +2,8 @@ object Form2: TForm2
   Left = 0
   Top = 0
   Caption = 'Delphi : TGBEArray demo (map, filter, reduce and more...)'
-  ClientHeight = 861
-  ClientWidth = 877
+  ClientHeight = 860
+  ClientWidth = 876
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -11,7 +11,7 @@ object Form2: TForm2
   object Layout1: TLayout
     Align = Left
     Size.Width = 201.000000000000000000
-    Size.Height = 861.000000000000000000
+    Size.Height = 860.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     OnClick = Layout1Click
@@ -377,7 +377,7 @@ object Form2: TForm2
       Margins.Right = 5.000000000000000000
       Margins.Bottom = 5.000000000000000000
       Size.Width = 191.000000000000000000
-      Size.Height = 189.000000000000000000
+      Size.Height = 188.000000000000000000
       Size.PlatformDefault = False
       XRadius = 7.000000000000000000
       YRadius = 7.000000000000000000
@@ -385,7 +385,7 @@ object Form2: TForm2
         Align = Left
         Position.Y = 25.000000000000000000
         Size.Width = 105.000000000000000000
-        Size.Height = 164.000000000000000000
+        Size.Height = 163.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
         object Button15: TButton
@@ -477,7 +477,7 @@ object Form2: TForm2
       object Layout4: TLayout
         Align = Client
         Size.Width = 86.000000000000000000
-        Size.Height = 164.000000000000000000
+        Size.Height = 163.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
         object Button19: TButton
@@ -553,7 +553,7 @@ object Form2: TForm2
     Position.X = 201.000000000000000000
     Position.Y = 10.000000000000000000
     Size.Width = 296.000000000000000000
-    Size.Height = 841.000000000000000000
+    Size.Height = 840.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     DisableFocusEffect = True
@@ -561,23 +561,23 @@ object Form2: TForm2
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     Viewport.Width = 292.000000000000000000
-    Viewport.Height = 837.000000000000000000
+    Viewport.Height = 836.000000000000000000
   end
   object ListBox2: TListBox
     Align = Client
     Margins.Top = 10.000000000000000000
     Margins.Right = 10.000000000000000000
     Margins.Bottom = 10.000000000000000000
-    Size.Width = 359.000000000000000000
-    Size.Height = 841.000000000000000000
+    Size.Width = 358.000000000000000000
+    Size.Height = 840.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 355.000000000000000000
-    Viewport.Height = 837.000000000000000000
+    Viewport.Width = 354.000000000000000000
+    Viewport.Height = 836.000000000000000000
   end
   object Splitter1: TSplitter
     Align = Left
@@ -585,7 +585,7 @@ object Form2: TForm2
     MinSize = 20.000000000000000000
     Position.X = 497.000000000000000000
     Size.Width = 11.000000000000000000
-    Size.Height = 861.000000000000000000
+    Size.Height = 860.000000000000000000
     Size.PlatformDefault = False
   end
 end
