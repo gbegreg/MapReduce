@@ -42,6 +42,7 @@ function Reverse:TGBEArray<T>;                                        // Reverse
 function Shift: T;                                                    // return the first item of the array and remove it from the array
 function Swap(index1, index2 : integer): TGBEArray<T>;                // Return new TGBEArra<T> with swap item1 and item2
 function Sort(const Comparer: IComparer<T> = nil): TGBEArray<T>;      // sort
+function ParallelSort(const Comparer: IComparer<T> = nil): TGBEArray<T>;  // sort using TParallelArray (Delphi 12.2 or higher)
 function SuchAs(index : integer; aValue : T): TGBEArray<T>;           // Generate a new Array with the same datas but with aValue at index position
 function SymmetricalDifferenceWith(anotherArray: TGBEArray<T>; lambda: TFunc<T, string> = nil): TGBEArray<T>;  // Return a new TGBEArray<T> symetrical difference of original array and anotherArray
 function ToArray: TArray<T>;                                          // convert TGBEArry to TArray
